@@ -18,7 +18,10 @@ def main():
     void.selected = True
     deck.append(void)
 
-    showCards(deck, 2)
+    lorem = Card('Lorem Ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur tortor lacus.', 999, 999, 999)
+    deck.append(lorem)
+
+    showCards(deck, 4)
 
     # Cycle through the deck till the end.
     for card in deck:
@@ -40,7 +43,7 @@ def showCards(deck, maxCardsShown):
     totalCards = len(deck)
 
     for card in deck:
-        card._constructACSIIform()
+        card._constructASCIIform()
         cummulativeCardPrintables.append(card.printables)
 
     # Using the first card to determine how long it is.
