@@ -24,9 +24,13 @@ class Card(object):
 
     """
 
+    ## TODO: Decide if you want class globals.
+    # MAXCHARSPERLINE = 17
+    # MAXLINES = 7
+
     def __init__(self, name, description, attack, defence, hp):
         super(Card, self).__init__()
-        # The number of maximum width of characters. Must be an  odd number.
+        # The number of maximum width of characters. Must be an odd number.
         self.MAXCHARSPERLINE = 17
         # The number of maximum description lines.
         self.MAXLINES = 7
@@ -77,7 +81,7 @@ class Card(object):
         if length > self.MAXCHARSPERLINE:
             parts = textwrap.wrap(content, width=self.MAXCHARSPERLINE)
 
-        # How many times it the line repeated? By default one time.
+        # How many times is this line repeated? By default one time.
         for time in range(times):
             # Append the readjusted lines to our printables list, with the
             # proper way (borders, spaces, etc.)
@@ -120,12 +124,21 @@ class Card(object):
             lineSepPartsBottom = '╠' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╩' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╣'
             bottomCard = '╚' + '═' * (self.MAXCHARSPERLINE + 2) + '╝'
 
+        # Append the top line separator.
         printables.append(lineSepPartsTop)
 
+        # Extend the list with a list containing the line with the middle parts,
+        # which are, perhaps, the strength values of the card.
         printables.extend(self.__cardLine(lineSepPartsMiddle))
+
+        # Append the bottom line separator.
         printables.append(lineSepPartsBottom)
 
+        # Extend the list with a list containing the line with the bottom parts,
+        # which are, perhaps, a watermark or some more information, i.e. type.
         printables.extend(self.__cardLine(bottomValue))
+
+        # The ASCII art of the bottom of the card.
         printables.append(bottomCard)
 
         return printables
@@ -137,9 +150,11 @@ class Card(object):
             For example,
                                 ┌──────────────999♥ ┐
         """
+
+        # The ASCII art of the bottom of the card.
         if hp == '':
             top = '┌' + '─' * (self.MAXCHARSPERLINE + 2) + '┐'
-        else:
+        else:  # Variation if HP is given.
             hpText = str(hp) + '♥'
             top = '┌' + '─' * (self.MAXCHARSPERLINE - 3) + hpText.rjust(4) + ' ┐'
 
@@ -181,10 +196,10 @@ class Card(object):
         defence = str(self.defence) + '⛨'
         watermark = ' ' * (self.MAXCHARSPERLINE//2 - 4) + 'Leajian ©' + ' ' * (self.MAXCHARSPERLINE//2 - 4) # Centered, almost.
 
-        # The top of the card, containg the corners and the HP seamlessly.
+        # The top of the card, containing the corners and the HP seamlessly.
         printables.extend(self.__topOfCard(self.hp))
 
-        # A card line containg the name of it.
+        # A card line containing the name of it.
         printables.extend(self.__cardLine(self.name))
         # A default line separator.
         printables.extend(self.__lineSeparator())
@@ -202,7 +217,7 @@ class Card(object):
         printables.extend(self.__cardLine(times=self.MAXLINES-lines))
         printables.extend(self.__cardLine(lineSep, start='├', end='┤'))
 
-        # The bottom of the card, containg more information about card's
+        # The bottom of the card, containing more information about card's
         # strength and a copyright watermark (could be something else,
         # see the bottomOfCard method for more customization).
         printables.extend(self.__bottomOfCard(attack, defence, watermark))
