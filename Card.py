@@ -24,7 +24,7 @@ class Card(object):
 
     """
 
-    ## TODO: Decide if you want class globals.
+    # TODO: Decide if you want class globals.
     # MAXCHARSPERLINE = 17
     # MAXLINES = 7
 
@@ -34,6 +34,9 @@ class Card(object):
         self.MAXCHARSPERLINE = 17
         # The number of maximum description lines.
         self.MAXLINES = 7
+        # TODO: Size should be enforced by deck's rules.
+        # Initialize card size. The number of lines of the ASCII art.
+        self.CARDSIZE = 0
 
         self.name = name
 
@@ -51,8 +54,65 @@ class Card(object):
         # A toggle for card highlighting.
         self.selected = False
 
+        # A toggle for card facing.
+        self.front = True
+
         # The ASCII art, represented in lines per item in the list.
         self.printables = []
+
+    ############################ BASIC DECORATION ##############################
+
+    def __topOfCard(self, hp=''):
+        """
+            Returns a list containing only the ASCII art of the top of the card.
+            If HP (max 3 digits) is given, it's automatically attached at the top.
+            For example,
+                                ┌──────────────999♥ ┐
+        """
+
+        # The ASCII art of the top of the card.
+        if hp == '':
+            top = '┌' + '─' * (self.MAXCHARSPERLINE + 2) + '┐'
+        else:  # Variation if HP is given.
+            hpText = str(hp) + '♥'
+            top = '┌' + '─' * (self.MAXCHARSPERLINE - 3) + hpText.rjust(4) + ' ┐'
+
+        # In case the card is selected, highlight it!
+        if self.selected:
+            if hp == '':
+                top = '╔' + '═' * (self.MAXCHARSPERLINE + 2) + '╗'
+            else:
+                hpText = str(hp) + '♥'
+                top = '╔' + '═' * (self.MAXCHARSPERLINE - 3) + hpText.rjust(4) + ' ╗'
+
+        return [top]
+
+    def __bottomOfCard(self):
+        """
+            Returns a list containing only the ASCII art of the bottom of the card.
+            For example,
+                                └───────────────────┘
+        """
+
+        # The ASCII art of the bottom of the card.
+        bottom = '└' + '─' * (self.MAXCHARSPERLINE + 2) + '┘'
+
+        # In case the card is selected, highlight it!
+        if self.selected:
+            bottom = '╚' + '═' * (self.MAXCHARSPERLINE + 2) + '╝'
+
+        return [bottom]
+
+    def __lineSeparator(self):
+        """
+            Returns a list containing only the default ASCII line inside the card.
+            For example,
+                                ├───────────────────┤
+        """
+        lineSep = '├' + '─' * (self.MAXCHARSPERLINE + 2) + '┤'
+        if self.selected:
+            lineSep = '╠' + '═' * (self.MAXCHARSPERLINE + 2) + '╣'
+        return [lineSep]
 
     def __cardLine(self, content='', times=1, start='│', end='│'):
         """
@@ -90,103 +150,13 @@ class Card(object):
 
         return printables
 
-    def __lineSeparator(self):
+    ############################# DETAILS OF CARD ##############################
+
+    def __frontFace(self, printables):
         """
-            Returns a list containing only the default ASCII line inside the card.
+            Building instructions of the front face of the card.
+            Modifies a list which contains the printable form of the card.
         """
-        lineSep = '├' + '─' * (self.MAXCHARSPERLINE + 2) + '┤'
-        if self.selected:
-            lineSep = '╠' + '═' * (self.MAXCHARSPERLINE + 2) + '╣'
-        return [lineSep]
-
-    def __bottomOfCard(self, leftValue, rightValue, bottomValue):
-        """
-            Returns a list containing only the ASCII art of the bottom of the card.
-            By default, this design has separators in the middle, because you
-            can choose a left and a right value. Also, you can exactly below that.
-            For example,
-                                ├─────────┬─────────┤
-                                │    999⚔ │   999⛨  │
-                                ├─────────┴─────────┤
-                                │     Leajian ©     │
-                                └───────────────────┘
-        """
-        printables = []
-
-        lineSepPartsTop = '├' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┬' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┤'
-        lineSepPartsMiddle = '{}{} │{}{}' .format(' ' * (self.MAXCHARSPERLINE//2 - 5), leftValue.rjust(4), ' ' * (self.MAXCHARSPERLINE//2 - 5), rightValue.rjust(4))
-        lineSepPartsBottom = '├' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┴' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┤'
-        bottomCard = '└' + '─' * (self.MAXCHARSPERLINE + 2) + '┘'
-
-        if self.selected:
-            lineSepPartsTop = '╠' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╦' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╣'
-            lineSepPartsMiddle = '{}{} ║{}{}' .format(' ' * (self.MAXCHARSPERLINE//2 - 5), leftValue.rjust(4), ' ' * (self.MAXCHARSPERLINE//2 - 5), rightValue.rjust(4))
-            lineSepPartsBottom = '╠' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╩' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╣'
-            bottomCard = '╚' + '═' * (self.MAXCHARSPERLINE + 2) + '╝'
-
-        # Append the top line separator.
-        printables.append(lineSepPartsTop)
-
-        # Extend the list with a list containing the line with the middle parts,
-        # which are, perhaps, the strength values of the card.
-        printables.extend(self.__cardLine(lineSepPartsMiddle))
-
-        # Append the bottom line separator.
-        printables.append(lineSepPartsBottom)
-
-        # Extend the list with a list containing the line with the bottom parts,
-        # which are, perhaps, a watermark or some more information, i.e. type.
-        printables.extend(self.__cardLine(bottomValue))
-
-        # The ASCII art of the bottom of the card.
-        printables.append(bottomCard)
-
-        return printables
-
-    def __topOfCard(self, hp=''):
-        """
-            Returns a list containing only the ASCII art of the top of the card.
-            If HP (max 3 digits) is given, it's automatically attached at the top.
-            For example,
-                                ┌──────────────999♥ ┐
-        """
-
-        # The ASCII art of the bottom of the card.
-        if hp == '':
-            top = '┌' + '─' * (self.MAXCHARSPERLINE + 2) + '┐'
-        else:  # Variation if HP is given.
-            hpText = str(hp) + '♥'
-            top = '┌' + '─' * (self.MAXCHARSPERLINE - 3) + hpText.rjust(4) + ' ┐'
-
-        # In case the card is selected, highlight it!
-        if self.selected:
-            if hp == '':
-                top = '╔' + '═' * (self.MAXCHARSPERLINE + 2) + '╗'
-            else:
-                hpText = str(hp) + '♥'
-                top = '╔' + '═' * (self.MAXCHARSPERLINE - 3) + hpText.rjust(4) + ' ╗'
-
-        return [top]
-
-    def _select(self):
-        """
-            Causes the card to toggle between highlighted and not.
-        """
-        if self.selected:
-            self.selected = False
-        else:
-            self.selected = True
-
-        # A toggle is a reason to update the ASCII form.
-        self._constructASCIIform()
-
-    def _constructASCIIform(self):
-        """
-            Builds the ASCII form of the card, by creating a list, containing
-            each line of the card. This way it can be easily represented
-            alongside other cards.
-        """
-        printables = []
 
         # A decoration between description and the rest of the card.
         lineSep = '▒' * self.MAXCHARSPERLINE
@@ -220,10 +190,110 @@ class Card(object):
         # The bottom of the card, containing more information about card's
         # strength and a copyright watermark (could be something else,
         # see the bottomOfCard method for more customization).
-        printables.extend(self.__bottomOfCard(attack, defence, watermark))
+        printables.extend(self.__bottomValuesOfCard(attack, defence, watermark))
 
-        # Finally, assigning to the card itself it's printable form.
-        self.printables = printables
+        # The ASCII art of the bottom of the card.
+        printables.extend(self.__bottomOfCard())
+
+    def __backFace(self, printables):
+        """
+            Building instructions of the front face of the card.
+            Modifies a list which contains the printable form of the card.
+        """
+
+        # Clear the printable form afterwards.
+        printables.clear()
+
+        printables.extend(self.__topOfCard())
+        # Print CARDSIZE times card lines, but without top and bottom art.
+        # Thus, minus 2.
+        backArt = ':' * self.CARDSIZE
+        printables.extend(self.__cardLine(backArt, times=self.CARDSIZE - 2))
+        printables.extend(self.__bottomOfCard())
+
+    def __bottomValuesOfCard(self, leftValue, rightValue, bottomValue):
+        """
+            Returns a list containing only the ASCII art of the bottom of the card.
+            By default, this design has separators in the middle, because you
+            can choose a left and a right value. Also, you can exactly below that.
+            For example,
+                                ├─────────┬─────────┤
+                                │    999⚔ │   999⛨  │
+                                ├─────────┴─────────┤
+                                │     Leajian ©     │
+        """
+        printables = []
+
+        lineSepTop = '├' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┬' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┤'
+        lineSepMiddle = '{}{} │{}{}' .format(' ' * (self.MAXCHARSPERLINE//2 - 5), leftValue.rjust(4), ' ' * (self.MAXCHARSPERLINE//2 - 5), rightValue.rjust(4))
+        lineSepBottom = '├' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┴' + '─' * (self.MAXCHARSPERLINE//2 + 1) + '┤'
+
+        if self.selected:
+            lineSepTop = '╠' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╦' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╣'
+            lineSepMiddle = '{}{} ║{}{}' .format(' ' * (self.MAXCHARSPERLINE//2 - 5), leftValue.rjust(4), ' ' * (self.MAXCHARSPERLINE//2 - 5), rightValue.rjust(4))
+            lineSepBottom = '╠' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╩' + '═' * (self.MAXCHARSPERLINE//2 + 1) + '╣'
+
+        # Append the top line separator.
+        printables.append(lineSepTop)
+
+        # Extend the list with a list containing the line with the middle parts,
+        # which are, perhaps, the strength values of the card.
+        printables.extend(self.__cardLine(lineSepMiddle))
+
+        # Append the bottom line separator.
+        printables.append(lineSepBottom)
+
+        # Extend the list with a list containing the line with the bottom parts,
+        # which are, perhaps, a watermark or some more information, i.e. type.
+        printables.extend(self.__cardLine(bottomValue))
+
+        return printables
+
+    ############################# BASIC METHODS ################################
+
+    def _constructASCIIform(self):
+        """
+            (Re)builds the ASCII form of the card, by creating a list with
+            printable lines the card consists. This way it can be easily
+            represented alongside other cards.
+        """
+
+        self.printables.clear()
+
+        if self.front:
+            self.__frontFace(self.printables)
+        else:
+            self.__backFace(self.printables)
+
+        # TODO: Consider the purpose of continious size updates.
+        #       Might make sense when animations are introduced.
+
+        # Update the card size per change.
+        self.CARDSIZE = len(self.printables)
+
+    def _select(self):
+        """
+            Causes the card to toggle between highlighted and not.
+        """
+        if self.selected:
+            self.selected = False
+        else:
+            self.selected = True
+
+        # A toggle is a reason to update the ASCII form.
+        self._constructASCIIform()
+
+    def _flip(self):
+        """
+            Causes the card to toggle between facing front or back.
+        """
+        if self.front:
+            self.front = False
+        else:
+            self.front = True
+
+        # A toggle is a reason to update the ASCII form.
+        self._constructASCIIform()
 
     def _show(self):
         """
