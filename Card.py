@@ -27,6 +27,7 @@ class Card(object):
     # TODO: Decide if you want class globals.
     # MAXCHARSPERLINE = 17
     # MAXLINES = 7
+    # CARDSIZE = 0
 
     def __init__(self, name, description, attack, defence, hp):
         super(Card, self).__init__()
