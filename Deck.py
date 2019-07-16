@@ -2,20 +2,15 @@ from Card import Card
 import random
 
 
-
 class Deck(object):
 
     def __init__(self, Cards=[]):
 
         self.Cards = Cards
 
-
-
     def shuffleDeck(self):
         random.shuffle(self.Cards)
 
-    
-    
     def showAllCards(self, cardsPerLine):
 
         for card in self.Cards:

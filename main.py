@@ -1,10 +1,10 @@
 from Deck import Deck
 import tests
 
-def main():
-   
 
-    #Create deck from a test preset
+def main():
+
+    # Create deck from a test preset
     deck = Deck(Cards=tests.createPresetDeck())
 
     """
@@ -29,9 +29,8 @@ def main():
 
             key = input("Input: ")
 
-    
-    #Show cards of the deck, 4 per line
     deck.shuffleDeck()
+    # Show cards of the deck, 4 per line
     deck.showAllCards(4)
 
 

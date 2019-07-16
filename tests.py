@@ -1,4 +1,5 @@
 from Card import Card
+
 """
 This test file is just for creating test decks and such, keeping them separate
 from the main.py testing environment to keep main.py simple and readable.
@@ -6,8 +7,9 @@ I've added a few more test cards just to ensure that any changines to formatting
 will still be respected when the deck size grows. (Just used temporary creatures)
 """
 
+
 def createPresetDeck():
-    
+
     deck = []
 
     dragon = Card('Dragon',
@@ -45,12 +47,11 @@ def createPresetDeck():
                 12, 8, 100)
     deck.append(sylph)
 
-    scarab = Card('Scarab', 
+    scarab = Card('Scarab',
                 'Not adept at combat, Scarabs are still highly valued on the\
                     battlefield for their ability to heal others.',
                     0, 8, 100)
     deck.append(scarab)
-
 
     stormGiant = Card('Storm Giant',
                         'Storm Giants are mighty beasts that become even\
@@ -63,7 +64,5 @@ def createPresetDeck():
                         be effective when used as a distraction',
                         6, 4, 100)
     deck.append(locust)
-
-
 
     return deck
