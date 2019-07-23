@@ -1,35 +1,21 @@
 from Deck import Deck
+from Grid import Grid
+import Controls
 import tests
 
 
 def main():
 
+    grid = Grid(42, 85)
+    grid.printTiles()
+
     # Create deck from a test preset
-    deck = Deck(Cards=tests.createPresetDeck())
+    deck = Deck(cards=tests.createPresetDeck())
 
-    """
-        Cycle the deck
-    """
-    # Cycle through the deck till the end.
-    for card in deck.Cards:
-
-        card._show()
-        key = input("Input: ")
-        print('\033c')
-        while key != '':
-            if key == 's':
-                print('\033c')
-                card._select()
-                card._show()
-
-            if key == 'f':
-                print('\033c')
-                card._flip()
-                card._show()
-
-            key = input("Input: ")
+    Controls.cycle(deck)
 
     deck.shuffleDeck()
+
     # Show cards of the deck, 4 per line
     deck.showAllCards(4)
 
