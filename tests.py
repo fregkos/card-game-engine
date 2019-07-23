@@ -18,7 +18,7 @@ def createPresetDeck():
                 100, 45, 33)
     deck.append(dragon)
 
-    elf = Card('Elf',\
+    elf = Card('Elf',
             'A powerful friend of dragons. Fights for peace.', 21, 11, 23)
     deck.append(elf)
 
@@ -49,20 +49,20 @@ def createPresetDeck():
 
     scarab = Card('Scarab',
                 'Not adept at combat, Scarabs are still highly valued on the\
-                    battlefield for their ability to heal others.',
-                    0, 8, 100)
+                battlefield for their ability to heal others.',
+                0, 8, 100)
     deck.append(scarab)
 
     stormGiant = Card('Storm Giant',
-                        'Storm Giants are mighty beasts that become even\
-                        more powerful when struck by lightning.',
-                        35, 42, 100)
+                'Storm Giants are mighty beasts that become even\
+                more powerful when struck by lightning.',
+                35, 42, 100)
     deck.append(stormGiant)
 
     locust = Card('Locust',
-                        'A feeble pest, locusts are defeated easily, but can\
-                        be effective when used as a distraction',
-                        6, 4, 100)
+                'A feeble pest, locusts are defeated easily, but can\
+                be effective when used as a distraction',
+                6, 4, 100)
     deck.append(locust)
 
     return deck
