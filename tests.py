@@ -1,4 +1,6 @@
 from Card import Card
+import random
+import string
 
 """
 This test file is just for creating test decks and such, keeping them separate
@@ -64,5 +66,29 @@ def createPresetDeck():
                 be effective when used as a distraction',
                 6, 4, 100)
     deck.append(locust)
+
+    return deck
+
+
+def createRandomDeck(numberOfCards, style=0):
+    deck = []
+    styles = [
+                ['▒', '_', '▓'],
+                ['├', '─', '┤', '│', '┬', '┴', '┼', '┌', '┐', '└', '┘'],
+                ['.', ':'],
+                ['▀', '▄', '◢', '◣', '◥', '◤', '▬', '█', '▄', '█'],
+                ['♚', '♛', '♜', '♝', '♞', '♟', '♔', '♕', '♖', '♗', '♘', '♙', '▀▄'],
+                string.ascii_letters
+    ]
+
+    for card in range(numberOfCards):
+        name = 'Card ' + ''.join(random.choices(string.ascii_letters, k=10))
+        description = ''.join(random.choices(styles[style], k=17*7))
+        deck.append(
+                    Card(name, description, random.randint(1, 100),
+                                            random.randint(1, 100),
+                                            random.randint(1, 100)
+                    )
+        )
 
     return deck
