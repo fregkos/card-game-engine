@@ -2,7 +2,6 @@ import random
 
 
 class Deck(object):
-
     def __init__(self, cards=[]):
         self.cards = cards
 
@@ -21,8 +20,8 @@ class Deck(object):
 
             for line in range(totalLines):
 
-                for card in self.cards[cards:cards + cardsPerLine]:
-                    print(card.printables[line], end='')
+                for card in self.cards[cards : cards + cardsPerLine]:
+                    print(card.printables[line], end="")
 
                 print()
 

@@ -3,27 +3,29 @@ from textwrap import wrap
 
 class Card(object):
     """
-        Example preview of card style :
-                    ┌──────────────999♥ ┐
-                    │ Lorem Ipsum       │
-                    ├───────────────────┤
-                    ├ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ ┤
-                    │ Lorem ipsum dolor │
-                    │ sit amet,         │
-                    │ consectetur       │
-                    │ adipiscing elit.  │
-                    │ Pellentesque      │
-                    │ efficitur tortor  │
-                    │ lacus.            │
-                    ├ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ ┤
-                    ├─────────┬─────────┤
-                    │    999⚔ │   999⛨ │
-                    ├─────────┴─────────┤
-                    │     Leajian ©     │
-                    └───────────────────┘
+    Example preview of card style :
+                ┌──────────────999♥ ┐
+                │ Lorem Ipsum       │
+                ├───────────────────┤
+                ├ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ ┤
+                │ Lorem ipsum dolor │
+                │ sit amet,         │
+                │ consectetur       │
+                │ adipiscing elit.  │
+                │ Pellentesque      │
+                │ efficitur tortor  │
+                │ lacus.            │
+                ├ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ ┤
+                ├─────────┬─────────┤
+                │    999⚔ │   999⛨ │
+                ├─────────┴─────────┤
+                │     Leajian ©     │
+                └───────────────────┘
     """
 
-    def __init__(self, name, description, attack, defence, hp, width=17, height=17, padding=1):
+    def __init__(
+        self, name, description, attack, defence, hp, width=17, height=17, padding=1
+    ):
         super(Card, self).__init__()
         # The number of maximum width of characters. Must be an odd number,
         # because the card has to have symmetry line of one character for the
@@ -38,13 +40,13 @@ class Card(object):
         # TODO: Size should be enforced by deck's rules.
         # Initialize card size. The number of lines of the ASCII art.
         self.HEIGHT = 0
-        self.padding = ' ' * padding
+        self.padding = " " * padding
 
         self.name = name
 
         # If description is not given, fill it with some blank characters.
-        if description == '':
-            self.description = '█' * self.WIDTH * self.MAX_DESCRIPTION_LINES
+        if description == "":
+            self.description = "█" * self.WIDTH * self.MAX_DESCRIPTION_LINES
         else:
             self.description = description
 
@@ -63,93 +65,107 @@ class Card(object):
         self.printables = []
 
         self.theme = {
-            'unselected': {
-                'topCornerLeft': '┌',
-                'topCornerRight': '┐',
-                'bottomCornerLeft': '└',
-                'bottomCornerRight': '┘',
-                'startLineSep': '├',
-                'horizontalBorder': '─',
-                'endLineSep': '┤',
-                'topSep': '┬',
-                'verticalBorder': '│',
-                'bottomSep': '┴',
-                'crossSep': '┼'
+            "unselected": {
+                "topCornerLeft": "┌",
+                "topCornerRight": "┐",
+                "bottomCornerLeft": "└",
+                "bottomCornerRight": "┘",
+                "startLineSep": "├",
+                "horizontalBorder": "─",
+                "endLineSep": "┤",
+                "topSep": "┬",
+                "verticalBorder": "│",
+                "bottomSep": "┴",
+                "crossSep": "┼",
             },
-            'selected': {
-                'topCornerLeft': '╔',
-                'topCornerRight': '╗',
-                'bottomCornerLeft': '╚',
-                'bottomCornerRight': '╝',
-                'startLineSep': '╠',
-                'horizontalBorder': '═',
-                'endLineSep': '╣',
-                'topSep': '╦',
-                'verticalBorder': '║',
-                'bottomSep': '╩',
-                'crossSep': '╬'
+            "selected": {
+                "topCornerLeft": "╔",
+                "topCornerRight": "╗",
+                "bottomCornerLeft": "╚",
+                "bottomCornerRight": "╝",
+                "startLineSep": "╠",
+                "horizontalBorder": "═",
+                "endLineSep": "╣",
+                "topSep": "╦",
+                "verticalBorder": "║",
+                "bottomSep": "╩",
+                "crossSep": "╬",
             },
-            'specialCharacters': {
-                'hp': '♥',
-                'attack': '⚔',
-                'defence': '⛨'
-            }
+            "specialCharacters": {"hp": "♥", "attack": "⚔", "defence": "⛨"},
         }
 
-        self.appearance = self.theme['unselected']
+        self.appearance = self.theme["unselected"]
 
     ############################ BASIC DECORATION ##############################
 
-    def __topOfCard(self, hp=''):
+    def __topOfCard(self, hp=""):
         """
-            Returns a list containing only the ASCII art of the top of the card.
-            If HP (max 3 digits) is given, it's automatically attached at the top.
-            For example,
-                                ┌──────────────999♥ ┐
+        Returns a list containing only the ASCII art of the top of the card.
+        If HP (max 3 digits) is given, it's automatically attached at the top.
+        For example,
+                            ┌──────────────999♥ ┐
         """
 
         # The ASCII art of the top of the card.
-        if hp == '':
-            top = self.appearance['topCornerLeft'] + self.appearance['horizontalBorder'] * (self.WIDTH + 2) + self.appearance['topCornerRight']
+        if hp == "":
+            top = (
+                self.appearance["topCornerLeft"]
+                + self.appearance["horizontalBorder"] * (self.WIDTH + 2)
+                + self.appearance["topCornerRight"]
+            )
         else:  # Variation if HP is given.
-            hpText = str(hp) + self.theme['specialCharacters']['hp']
-            top = self.appearance['topCornerLeft'] + self.appearance['horizontalBorder'] * (self.WIDTH - len(hpText)) + hpText.rjust(len(hpText) + 1) + ' ' + self.appearance['topCornerRight']
+            hpText = str(hp) + self.theme["specialCharacters"]["hp"]
+            top = (
+                self.appearance["topCornerLeft"]
+                + self.appearance["horizontalBorder"] * (self.WIDTH - len(hpText))
+                + hpText.rjust(len(hpText) + 1)
+                + " "
+                + self.appearance["topCornerRight"]
+            )
 
         return [top]
 
     def __bottomOfCard(self):
         """
-            Returns a list containing only the ASCII art of the bottom of the card.
-            For example,
-                                └───────────────────┘
+        Returns a list containing only the ASCII art of the bottom of the card.
+        For example,
+                            └───────────────────┘
         """
 
         # The ASCII art of the bottom of the card.
-        bottom = self.appearance['bottomCornerLeft'] + self.appearance['horizontalBorder'] * (self.WIDTH + 2 * len(self.padding)) + self.appearance['bottomCornerRight']
+        bottom = (
+            self.appearance["bottomCornerLeft"]
+            + self.appearance["horizontalBorder"] * (self.WIDTH + 2 * len(self.padding))
+            + self.appearance["bottomCornerRight"]
+        )
 
         return [bottom]
 
     def __lineSeparator(self):
         """
-            Returns a list containing only the default ASCII line inside the card.
-            For example,
-                                ├───────────────────┤
+        Returns a list containing only the default ASCII line inside the card.
+        For example,
+                            ├───────────────────┤
         """
-        lineSep = self.appearance['startLineSep'] + self.appearance['horizontalBorder'] * (self.WIDTH + 2 * len(self.padding)) + self.appearance['endLineSep']
+        lineSep = (
+            self.appearance["startLineSep"]
+            + self.appearance["horizontalBorder"] * (self.WIDTH + 2 * len(self.padding))
+            + self.appearance["endLineSep"]
+        )
 
         return [lineSep]
 
-    def __line(self, content='', times=1, start=None, end=None):
+    def __line(self, content="", times=1, start=None, end=None):
         """
-            Returns a list containing card line(s) fitting maximum width.
-            Max WIDTH characters per line.
-            It automatically fits more characters in a new line, they exceed
-            the limit.
+        Returns a list containing card line(s) fitting maximum width.
+        Max WIDTH characters per line.
+        It automatically fits more characters in a new line, they exceed
+        the limit.
         """
         if start is None:
-            start = self.appearance['verticalBorder']
+            start = self.appearance["verticalBorder"]
         if end is None:
-            end = self.appearance['verticalBorder']
+            end = self.appearance["verticalBorder"]
 
         # Initialize the printable form of the line(s).
         printables = []
@@ -167,44 +183,65 @@ class Card(object):
             # Append the readjusted lines to our printables list, with the
             # proper way (borders, spaces, etc.)
             for part in parts:
-                printables.append('{}{}{}{}{}' .format(start, self.padding, part.ljust(self.WIDTH), self.padding, end))
+                printables.append(
+                    "{}{}{}{}{}".format(
+                        start, self.padding, part.ljust(self.WIDTH), self.padding, end
+                    )
+                )
 
         return printables
 
     def __columns(self, elements):
         """
-            Returns a list containing the ASCII art of a list of elements,
-            aranged in columns.
-            For example,
-                                ├──────┬─────┬──────┤
-                                │   0⚔ │  0⛨ │  3⚕  │
-                                ├──────┴─────┴──────┤
+        Returns a list containing the ASCII art of a list of elements,
+        aranged in columns.
+        For example,
+                            ├──────┬─────┬──────┤
+                            │   0⚔ │  0⛨ │  3⚕  │
+                            ├──────┴─────┴──────┤
         """
         # Initialize the printable form of the line(s).
         printables = []
 
         numOfColumns = len(elements)
 
-        widthPerCol = (self.WIDTH - (numOfColumns - 1))//numOfColumns
-        #total = widthPerCol + (numOfColumns - 1)
-        #if total != self.WIDTH:
+        widthPerCol = (self.WIDTH - (numOfColumns - 1)) // numOfColumns
+        # total = widthPerCol + (numOfColumns - 1)
+        # if total != self.WIDTH:
         #    return self.__line('COLUMN CREATION ERROR: This partition is not feasible with the given width. To be feasible, add {} more width to it.' .format(abs(total - self.WIDTH)))
 
-        lineSepTop = lineSepBottom = self.appearance['startLineSep'] + self.appearance['horizontalBorder'] * len(self.padding)
+        lineSepTop = lineSepBottom = self.appearance["startLineSep"] + self.appearance[
+            "horizontalBorder"
+        ] * len(self.padding)
         for columns in range(numOfColumns):
-            lineSepTop += self.appearance['horizontalBorder'] * widthPerCol + self.appearance['topSep']
-            lineSepBottom += self.appearance['horizontalBorder'] * widthPerCol + self.appearance['bottomSep']
-        lineSepTop = lineSepTop[:-1] + self.appearance['horizontalBorder'] * len(self.padding) + self.appearance['endLineSep']
-        lineSepBottom = lineSepBottom[:-1] + self.appearance['horizontalBorder'] * len(self.padding) + self.appearance['endLineSep']
+            lineSepTop += (
+                self.appearance["horizontalBorder"] * widthPerCol
+                + self.appearance["topSep"]
+            )
+            lineSepBottom += (
+                self.appearance["horizontalBorder"] * widthPerCol
+                + self.appearance["bottomSep"]
+            )
+        lineSepTop = (
+            lineSepTop[:-1]
+            + self.appearance["horizontalBorder"] * len(self.padding)
+            + self.appearance["endLineSep"]
+        )
+        lineSepBottom = (
+            lineSepBottom[:-1]
+            + self.appearance["horizontalBorder"] * len(self.padding)
+            + self.appearance["endLineSep"]
+        )
 
-        #maxLenOfStrings = len(max(elements, key=len))
+        # maxLenOfStrings = len(max(elements, key=len))
 
-        lineSepMiddle = ''
+        lineSepMiddle = ""
         for element in elements:
-            lineSepMiddle += '{}{}{}'\
-                .format(element.rjust(widthPerCol - len(self.padding)),
-                        self.padding,
-                        self.appearance['verticalBorder'])
+            lineSepMiddle += "{}{}{}".format(
+                element.rjust(widthPerCol - len(self.padding)),
+                self.padding,
+                self.appearance["verticalBorder"],
+            )
         lineSepMiddle = lineSepMiddle[:-1] + self.padding
         # Append the top line separator.
         printables.append(lineSepTop)
@@ -222,18 +259,18 @@ class Card(object):
 
     def __frontFace(self, printables):
         """
-            Building instructions of the front face of the card.
-            Modifies a list which contains the printable form of the card.
+        Building instructions of the front face of the card.
+        Modifies a list which contains the printable form of the card.
         """
 
         # A decoration between description and the rest of the card.
-        lineSep = '▒' * self.WIDTH
+        lineSep = "▒" * self.WIDTH
 
         # Preparation for the bottom info of the card.
-        attack = str(self.attack) + self.theme['specialCharacters']['attack']
-        defence = str(self.defence) + self.theme['specialCharacters']['defence']
-        regeneration = '3⚕'
-        watermark = 'Leajian ©' .center(self.WIDTH)
+        attack = str(self.attack) + self.theme["specialCharacters"]["attack"]
+        defence = str(self.defence) + self.theme["specialCharacters"]["defence"]
+        regeneration = "3⚕"
+        watermark = "Leajian ©".center(self.WIDTH)
 
         # The top of the card, containing the corners and the HP seamlessly.
         printables.extend(self.__topOfCard(self.hp))
@@ -243,7 +280,11 @@ class Card(object):
         # A default line separator.
         printables.extend(self.__lineSeparator())
         # A custom line separation with some decoration.
-        customLineSep = self.__line(lineSep, start=self.appearance['startLineSep'], end=self.appearance['endLineSep'])
+        customLineSep = self.__line(
+            lineSep,
+            start=self.appearance["startLineSep"],
+            end=self.appearance["endLineSep"],
+        )
         printables.extend(customLineSep)
 
         # Save temporarily the printable form of the description part.
@@ -254,7 +295,7 @@ class Card(object):
         printables.extend(temp)
 
         # Fill at least MAX_DESCRIPTION_LINES to reach card height.
-        printables.extend(self.__line(times=self.MAX_DESCRIPTION_LINES-lines))
+        printables.extend(self.__line(times=self.MAX_DESCRIPTION_LINES - lines))
         printables.extend(customLineSep)
 
         # The bottom of the card, containing more information about card's
@@ -267,8 +308,8 @@ class Card(object):
 
     def __backFace(self, printables):
         """
-            Building instructions of the front face of the card.
-            Modifies a list which contains the printable form of the card.
+        Building instructions of the front face of the card.
+        Modifies a list which contains the printable form of the card.
         """
 
         # Clear the printable form afterwards.
@@ -277,7 +318,7 @@ class Card(object):
         printables.extend(self.__topOfCard())
         # Print HEIGHT times card lines, but without top and bottom art.
         # Thus, minus 2.
-        backArt = ':' * self.HEIGHT
+        backArt = ":" * self.HEIGHT
         printables.extend(self.__line(backArt, times=self.HEIGHT - 2))
         printables.extend(self.__bottomOfCard())
 
@@ -285,9 +326,9 @@ class Card(object):
 
     def _constructASCIIform(self):
         """
-            (Re)builds the ASCII form of the card, by creating a list with
-            printable lines the card consists. This way it can be easily
-            represented alongside other cards.
+        (Re)builds the ASCII form of the card, by creating a list with
+        printable lines the card consists. This way it can be easily
+        represented alongside other cards.
         """
 
         self.printables.clear()
@@ -305,21 +346,21 @@ class Card(object):
 
     def _select(self):
         """
-            Causes the card to toggle between highlighted and not.
+        Causes the card to toggle between highlighted and not.
         """
         if self.selected:
             self.selected = False
-            self.appearance = self.theme['unselected']
+            self.appearance = self.theme["unselected"]
         else:
             self.selected = True
-            self.appearance = self.theme['selected']
+            self.appearance = self.theme["selected"]
 
         # A toggle is a reason to update the ASCII form.
         self._constructASCIIform()
 
     def _flip(self):
         """
-            Causes the card to toggle between facing front or back.
+        Causes the card to toggle between facing front or back.
         """
         if self.front:
             self.front = False
@@ -331,7 +372,7 @@ class Card(object):
 
     def _show(self):
         """
-            A simple way to print the card.
+        A simple way to print the card.
         """
         # Construct the card's art.
         self._constructASCIIform()

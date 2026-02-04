@@ -7,10 +7,10 @@ import tests
 def main():
 
     grid = Grid(42, 85)
-    #grid.printTiles()
+    # grid.printTiles()
 
     # Create deck from a test preset
-    #deck = Deck(cards=tests.createPresetDeck())
+    # deck = Deck(cards=tests.createPresetDeck())
     deck = Deck(cards=tests.createRandomDeck(8))
 
     Controls.cycle(deck)
@@ -21,5 +21,5 @@ def main():
     deck.showAllCards(4)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

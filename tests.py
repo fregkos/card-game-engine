@@ -14,57 +14,84 @@ def createPresetDeck():
 
     deck = []
 
-    dragon = Card('Dragon',
-                'Bursts flames out of his mouth.\
-                People fear it\'s wrath and stay away from it!',
-                100, 45, 33)
+    dragon = Card(
+        "Dragon",
+        "Bursts flames out of his mouth.\
+                People fear it's wrath and stay away from it!",
+        100,
+        45,
+        33,
+    )
     deck.append(dragon)
 
-    elf = Card('Elf',
-            'A powerful friend of dragons. Fights for peace.', 21, 11, 23)
+    elf = Card("Elf", "A powerful friend of dragons. Fights for peace.", 21, 11, 23)
     deck.append(elf)
 
-    missingno = Card('???', '', 999, 999, 999)
+    missingno = Card("???", "", 999, 999, 999)
     deck.append(missingno)
 
-    void = Card('Void', '▓'*119, 0, 0, 0)
+    void = Card("Void", "▓" * 119, 0, 0, 0)
     void.selected = True
     deck.append(void)
 
-    lorem = Card('Lorem Ipsum',
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
-                Pellentesque efficitur tortor lacus.',
-                999, 999, 999)
+    lorem = Card(
+        "Lorem Ipsum",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
+                Pellentesque efficitur tortor lacus.",
+        999,
+        999,
+        999,
+    )
     deck.append(lorem)
 
-    troll = Card('Troll',
-                'A bipedal, powerful creature of low intelligence. It is filled\
-                with rage making it difficult to control.',
-                22, 18 , 100)
+    troll = Card(
+        "Troll",
+        "A bipedal, powerful creature of low intelligence. It is filled\
+                with rage making it difficult to control.",
+        22,
+        18,
+        100,
+    )
     deck.append(troll)
 
-    sylph = Card('Sylph',
-                'Forest maidens with extreme proficiency with a bow. They can\
-                become ethereal to escape a fight.',
-                12, 8, 100)
+    sylph = Card(
+        "Sylph",
+        "Forest maidens with extreme proficiency with a bow. They can\
+                become ethereal to escape a fight.",
+        12,
+        8,
+        100,
+    )
     deck.append(sylph)
 
-    scarab = Card('Scarab',
-                'Not adept at combat, Scarabs are still highly valued on the\
-                battlefield for their ability to heal others.',
-                0, 8, 100)
+    scarab = Card(
+        "Scarab",
+        "Not adept at combat, Scarabs are still highly valued on the\
+                battlefield for their ability to heal others.",
+        0,
+        8,
+        100,
+    )
     deck.append(scarab)
 
-    stormGiant = Card('Storm Giant',
-                'Storm Giants are mighty beasts that become even\
-                more powerful when struck by lightning.',
-                35, 42, 100)
+    stormGiant = Card(
+        "Storm Giant",
+        "Storm Giants are mighty beasts that become even\
+                more powerful when struck by lightning.",
+        35,
+        42,
+        100,
+    )
     deck.append(stormGiant)
 
-    locust = Card('Locust',
-                'A feeble pest, locusts are defeated easily, but can\
-                be effective when used as a distraction',
-                6, 4, 100)
+    locust = Card(
+        "Locust",
+        "A feeble pest, locusts are defeated easily, but can\
+                be effective when used as a distraction",
+        6,
+        4,
+        100,
+    )
     deck.append(locust)
 
     return deck
@@ -73,22 +100,25 @@ def createPresetDeck():
 def createRandomDeck(numberOfCards, style=0):
     deck = []
     styles = [
-                ['▒', '_', '▓'],
-                ['├', '─', '┤', '│', '┬', '┴', '┼', '┌', '┐', '└', '┘'],
-                ['.', ':'],
-                ['▀', '▄', '◢', '◣', '◥', '◤', '▬', '█', '▄', '█'],
-                ['♚', '♛', '♜', '♝', '♞', '♟', '♔', '♕', '♖', '♗', '♘', '♙', '▀▄'],
-                string.ascii_letters
+        ["▒", "_", "▓"],
+        ["├", "─", "┤", "│", "┬", "┴", "┼", "┌", "┐", "└", "┘"],
+        [".", ":"],
+        ["▀", "▄", "◢", "◣", "◥", "◤", "▬", "█", "▄", "█"],
+        ["♚", "♛", "♜", "♝", "♞", "♟", "♔", "♕", "♖", "♗", "♘", "♙", "▀▄"],
+        string.ascii_letters,
     ]
 
     for card in range(numberOfCards):
-        name = 'Card ' + ''.join(random.choices(string.ascii_letters, k=10))
-        description = ''.join(random.choices(styles[style], k=17*7))
+        name = "Card " + "".join(random.choices(string.ascii_letters, k=10))
+        description = "".join(random.choices(styles[style], k=17 * 7))
         deck.append(
-                    Card(name, description, random.randint(1, 100),
-                                            random.randint(1, 100),
-                                            random.randint(1, 100)
-                    )
+            Card(
+                name,
+                description,
+                random.randint(1, 100),
+                random.randint(1, 100),
+                random.randint(1, 100),
+            )
         )
 
     return deck
